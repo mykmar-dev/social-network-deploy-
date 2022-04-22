@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const getConfigs = require('../middleware/get-configs')
+const {getConfigs} = require('../middleware/get-configs')
 
 const authSchema = mongoose.Schema({
     email: getConfigs(String, true),

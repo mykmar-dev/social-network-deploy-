@@ -41,8 +41,8 @@ exports.postLogin = async (req, res, next) => {
             })
             await newUser.save()
             if (!rememberMe)
-                res.coockie('token', token).status(200).send({ message: 'Authenticated', resultCode: 0 })
-            else res.coockie('token', token, { maxAge: 24 * 60 * 60 }).status(200).send({ message: 'Authenticated', resultCode: 0 })
+                res.cookie('token', token).status(200).send({ message: 'Authenticated', resultCode: 0 })
+            else res.cookie('token', token, { maxAge: 24 * 60 * 60 }).status(200).send({ message: 'Authenticated', resultCode: 0 })
 
         }
         else {
@@ -50,8 +50,8 @@ exports.postLogin = async (req, res, next) => {
             if (!isEqual)
                 throw new Error('Incorrect password!')
             if (!rememberMe)
-                res.coockie('token', token).status(201).send({ message: 'User created', resultCode: 0 })
-            else res.coockie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated', resultCode: 0 })
+                res.cookie('token', token).status(201).send({ message: 'User created', resultCode: 0 })
+            else res.cookie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated', resultCode: 0 })
         }
     }
     catch (err) {

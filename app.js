@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-    if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')
-       return cb(null, true)
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')
+        return cb(null, true)
     cb(null, false)
 }
 
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 app.use(express.static(__dirname))
 // app.use(express.static(path.join(__dirname, 'build')))
-app.use(multer({storage, fileFilter}).single('image'))
+app.use(multer({ storage, fileFilter }).single('image'))
 app.use(cookieParser())
 
 app.use('/auth', authRoutes)
@@ -57,9 +57,6 @@ app.use((error, req, res, next) => {
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.5m7db.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
     .then(res => {
         const server = app.listen(process.env.PORT || 8080)
-        const io = require('./socket').init(server)
-        io.on('connection', socket => { 
-        })
     })
     .catch(err => console.log(err))
 

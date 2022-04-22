@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
 
 exports.isAuth = (req, res, next) => {
-    const token = rawCookie.split('=').parsedCookie[1]
+    let token
     let decodedToken
     try {
+        token = req.cookies.split('=').parsedCookie[1]
         decodedToken = jwt.verify(token, 'secret')
     }
     catch (err) {

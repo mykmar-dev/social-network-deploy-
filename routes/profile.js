@@ -1,7 +1,7 @@
 const express = require('express')
 
 const profileControllers = require('../controllers/profile')
-const isAuth = require('../middleware/isAuth')
+const {isAuth} = require('../middleware/isAuth')
 
 const router = express.Router()
 
