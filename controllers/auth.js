@@ -5,11 +5,11 @@ const Auth = require('../models/auth')
 exports.getMe = (req, res, next) => {
     const userId = req.userId
     Auth.findById(userId)
-    .then(user => {
-        const {email, login} = user
-        res.send({id: userId, login, email, resultCode: 0})
-    })
-    .catch(err => next(err))
+        .then(user => {
+            const { email, login } = user
+            res.status(200).send({message: 'Got your user data', id: userId, login, email, resultCode: 0 })
+        })
+        .catch(err => next(err))
 }
 
 exports.postLogin = async (req, res, next) => {
@@ -19,16 +19,31 @@ exports.postLogin = async (req, res, next) => {
         const token = getToken(user._id.toString())
         if (!user) {
             const hashedPassword = bcrypt.hash(password, 12)
+            const profile = {
+                fullName: 'Full name',
+                aboutMe: 'About me',
+                lookingForAJob: 'Do I Looking for a job',
+                lookingForAJobDescription: 'Job description',
+                contacts: {
+                    telegram: 'telegram',
+                    discord: 'discord',
+                    gitHub: 'gitHub',
+                    facebook: 'facebook',
+                    instagram: 'instagram',
+                }
+            }
             const newUser = new Auth({
                 email,
                 password: hashedPassword,
-                login: 'No name yet'
+                login: 'Name',
+                status: 'Status',
+                profile
             })
             await newUser.save()
             if (!rememberMe)
                 res.coockie('token', token).status(200).send({ message: 'Authenticated', resultCode: 0 })
             else res.coockie('token', token, { maxAge: 24 * 60 * 60 }).status(200).send({ message: 'Authenticated', resultCode: 0 })
-    
+
         }
         else {
             const isEqual = bcrypt.compare(password, user.password)
@@ -39,16 +54,16 @@ exports.postLogin = async (req, res, next) => {
             else res.coockie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated', resultCode: 0 })
         }
     }
-    catch(err) {
+    catch (err) {
         next(err)
     }
 }
 
 exports.deleteLogout = (req, res, next) => {
     try {
-        res.clearCookie().send({message: 'logged out', resultCode: 0})
+        res.clearCookie().status(200).send({ message: 'logged out', resultCode: 0 })
     }
-    catch(err) {
+    catch (err) {
         next(err)
     }
 }

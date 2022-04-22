@@ -1,43 +1,21 @@
 const mongoose = require('mongoose');
 
+const getConfigs = require('../middleware/get-configs')
+
 const usersSchema = mongoose.Schema({
     items: [
         {
-            id: {
-                type: Number,
-                required: true
-            },
-            name: {
-                type: String,
-                required: true
-            },
-            status: {
-                type: String,
-                required: true
-            },
-            follow: {
-                type: Boolean,
-                required: true
-            },
+            id: getConfigs(Number, true),
+            name: getConfigs(String, true),
+            status: getConfigs(String, true),
+            follow: getConfigs(Boolean, true),
             photos: {
-                small: {
-                    type: String,
-                    required: true
-                },
-                large: {
-                    type: String,
-                    required: true
-                }
+                small: getConfigs(String, true),
+                large: getConfigs(String, true),
             },
             location: {
-                country: {
-                    type: String,
-                    required: true
-                },
-                city: {
-                    type: String,
-                    required: true
-                }
+                country: getConfigs(String, true),
+                city: getConfigs(String, true)
             }
         }
     ]

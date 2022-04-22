@@ -8,7 +8,7 @@ exports.getUsers = (req, res, next) => {
         .limit(pageSize)
         .then(users => {
             const parsedUsers = JSON.parse(users)
-            res.status(200).send({parsedUsers, resultCode: 0})
+            res.status(200).send({message: 'Got users', parsedUsers, resultCode: 0})
         })
         .catch(err => next(err))
 }
@@ -21,7 +21,7 @@ exports.putFollow = (req, res, next) => {
         return user.save()
     })
     .then(result => {
-        res.status(200).send({message: 'followed', resultCode: 0})
+        res.status(200).send({message: 'Followed', resultCode: 0})
     })
     .catch(err => next(err))
 }
@@ -34,7 +34,7 @@ exports.deleteUnfollow = (req, res, next) => {
         return user.save()
     })
     .then(result => {
-        res.status(200).send({message: 'unfollowed', resultCode: 0})
+        res.status(200).send({message: 'Unfollowed', resultCode: 0})
     })
     .catch(err => next(err))
 }
