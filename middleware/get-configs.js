@@ -1,6 +1,7 @@
-exports.getConfigs = (type, isRequired) => {
+exports.getConfigs = (type, isRequired, Default) => {
     return {
         type,
-        required: isRequired
+        required: isRequired,
+        default: Default
     }
 }

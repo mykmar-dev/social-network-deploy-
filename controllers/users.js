@@ -3,11 +3,11 @@ const User = require('../models/user')
 exports.getUsers = (req, res, next) => {
     const currentPage = req.query.page
     const pageSize = req.query.count
-    User.find({}, { _id: 1, photo: 1, nickname: 1, status: 1, location: 1, subscriptions: 1 })
+    User.find({}, { _id: 1, nickname: 1, status: 1, profile: {location: 1, photo: 1}, subscriptions: 1 })
         .skip((currentPage - 1) * pageSize)
         .limit(pageSize)
         .then(users => {
-            res.status(200).send({ message: 'Got users', resultCode: 0, data: {users, totalCount: 1} })
+            res.status(200).send({ message: 'Got users', resultCode: 0, users, totalCount: 1})
         })
         .catch(err => next(err))
 }
@@ -15,6 +15,8 @@ exports.getUsers = (req, res, next) => {
 exports.putFollow = (req, res, next) => {
     const idToFollow = req.params.id
     const authUser = req.authUser
+    if(authUser._id == idToFollow)
+        throw new Error('Cant follow myself)')
     User.findById(idToFollow)
         .then(user => {
             authUser.subscriptions.push(user._id)

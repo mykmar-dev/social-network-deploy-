@@ -5,7 +5,7 @@ const User = require('../models/user')
 exports.getMe = (req, res, next) => {
     const authUser = req.authUser
     const { email, nickname } = authUser
-    res.status(200).send({ message: 'Got your user data', resultCode: 0, data: { id: authUser._id, nickname, email } })
+    res.status(200).send({ message: 'Got your user data', resultCode: 0, id: authUser._id, nickname, email })
 }
 
 exports.postLogin = async (req, res, next) => {
@@ -14,30 +14,9 @@ exports.postLogin = async (req, res, next) => {
         const user = await User.findOne({ email })
         if (!user) {
             const hashedPassword = await bcrypt.hash(password, 12)
-            const profile = {
-                fullName: '',
-                aboutMe: '',
-                lookingForAJob: '',
-                lookingForAJobDescription: '',
-                contacts: {
-                    telegram: '',
-                    discord: '',
-                    git: '',
-                    facebook: '',
-                    instagram: '',
-                },
-                location: {
-                    country: '',
-                    city: ''
-                }
-            }
             const newUser = new User({
                 email,
                 password: hashedPassword,
-                nickname: '',
-                status: '',
-                photo: '',
-                profile,
                 subscriptions: []
             })
             const result = await newUser.save()
