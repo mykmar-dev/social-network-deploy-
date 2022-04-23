@@ -7,7 +7,6 @@ exports.getUsers = (req, res, next) => {
         .skip((currentPage - 1) * pageSize)
         .limit(pageSize)
         .then(users => {
-            // const items = users.map(u => { return { ...u._doc, _id: u._id.toString() } })
             res.status(200).send({ message: 'Got users', resultCode: 0, data: {users, totalCount: 1} })
         })
         .catch(err => next(err))
