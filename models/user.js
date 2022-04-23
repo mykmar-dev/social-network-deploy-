@@ -5,24 +5,24 @@ const { getConfigs } = require('../middleware/get-configs')
 const usersSchema = mongoose.Schema({
     email: getConfigs(String, true),
     password: getConfigs(String, true),
-    nickname: getConfigs(String, true),
-    status: getConfigs(String, true),
-    photo: getConfigs(String, true),
+    nickname: getConfigs(String, false),
+    status: getConfigs(String, false),
+    photo: getConfigs(String, false),
     profile: {
-        fullName: getConfigs(String, true),
-        aboutMe: getConfigs(String, true),
-        lookingForAJob: getConfigs(String, true),
-        lookingForAJobDescription: getConfigs(String, true),
+        fullName: getConfigs(String, false),
+        aboutMe: getConfigs(String, false),
+        lookingForAJob: getConfigs(String, false),
+        lookingForAJobDescription: getConfigs(String, false),
         contacts: {
-            telegram: getConfigs(String, true),
-            discord: getConfigs(String, true),
-            gitHub: getConfigs(String, true),
-            facebook: getConfigs(String, true),
-            instagram: getConfigs(String, true),
+            telegram: getConfigs(String, false),
+            discord: getConfigs(String, false),
+            git: getConfigs(String, false),
+            facebook: getConfigs(String, false),
+            instagram: getConfigs(String, false),
         },
         location: {
-            country: getConfigs(String, true),
-            city: getConfigs(String, true)
+            country: getConfigs(String, false),
+            city: getConfigs(String, false)
         }
     },
     subscriptions: [

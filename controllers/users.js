@@ -3,7 +3,7 @@ const User = require('../models/user')
 exports.getUsers = (req, res, next) => {
     const currentPage = req.query.page
     const pageSize = req.query.count
-    User.find({}, { _id: 1, photo: 1, nickname: 1, status: 1, location: 1 })
+    User.find({}, { _id: 1, photo: 1, nickname: 1, status: 1, location: 1, subscriptions: 1 })
         .skip((currentPage - 1) * pageSize)
         .limit(pageSize)
         .then(users => {

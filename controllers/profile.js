@@ -42,7 +42,18 @@ exports.putPhoto = (req, res, next) => {
         .catch(err => next(err))
 }
 
-//Fucking formData how I supposed to parse it?
-// exports.putPhoto = (req, res, next) => {
-//     res.send({ message: 'can`t process yet', resultCode: 1 })
-// }
+exports.putProfile = (req, res, next) => {
+    const authUser = req.authUser
+    const data = req.body
+    authUser.profile = {
+        ...authUser.profile, 
+        contacts: {...authUser.profile.contacts}, 
+        location: {...authUser.profile.location},
+        ...data
+    }
+    authUser.save()
+    .then(result => {
+        res.send({ message: 'Profile updated', resultCode: 0 })
+    })
+    .catch(err => next(err))
+}

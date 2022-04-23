@@ -15,28 +15,28 @@ exports.postLogin = async (req, res, next) => {
         if (!user) {
             const hashedPassword = await bcrypt.hash(password, 12)
             const profile = {
-                fullName: 'full name',
-                aboutMe: 'about me',
-                lookingForAJob: 'do I Looking for a job',
-                lookingForAJobDescription: 'job description',
+                fullName: '',
+                aboutMe: '',
+                lookingForAJob: '',
+                lookingForAJobDescription: '',
                 contacts: {
-                    telegram: 'telegram',
-                    discord: 'discord',
-                    gitHub: 'gitHub',
-                    facebook: 'facebook',
-                    instagram: 'instagram',
+                    telegram: '',
+                    discord: '',
+                    git: '',
+                    facebook: '',
+                    instagram: '',
                 },
                 location: {
-                    country: 'country',
-                    city: 'city'
+                    country: '',
+                    city: ''
                 }
             }
             const newUser = new User({
                 email,
                 password: hashedPassword,
-                nickname: 'nickname',
-                status: 'status',
-                photo: 'photo',
+                nickname: '',
+                status: '',
+                photo: '',
                 profile,
                 subscriptions: []
             })
