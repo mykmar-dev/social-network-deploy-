@@ -4,8 +4,8 @@ const User = require('../models/user')
 
 exports.getMe = (req, res, next) => {
     const authUser = req.authUser
-    const { email, nickname } = authUser
-    res.status(200).send({ message: 'Got your user data', resultCode: 0, id: authUser._id, nickname, email })
+    const { email, nickname, subscriptions} = authUser
+    res.status(200).send({ message: 'Got your user data', resultCode: 0, id: authUser._id, nickname, email, subscriptions })
 }
 
 exports.postLogin = async (req, res, next) => {
