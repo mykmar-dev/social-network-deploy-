@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const {deleteFile} = require('../utils/deleteFile')
 
 exports.getProfile = (req, res, next) => {
     const userId = req.params.userId
@@ -33,11 +34,12 @@ exports.putPhoto = (req, res, next) => {
     const authUser = req.authUser
     if (!req.file)
         throw new Error('No file uploaded!')
-    const newPhoto = req.file.path.split("\\").pop();
+    const newPhoto = req.file.path.split("\\").pop()
+    deleteFile(authUser.profile.photo)
     authUser.profile.photo = newPhoto
     authUser.save()
         .then(result => {
-            res.status(200).send({ message: 'Updated photo', resultCode: 0, photo: authUser.photo })
+            res.status(200).send({ message: 'Updated photo', resultCode: 0, photo: authUser.profile.photo })
         })
         .catch(err => next(err))
 }
