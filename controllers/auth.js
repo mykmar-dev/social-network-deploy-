@@ -1,57 +1,60 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const Auth = require('../models/auth')
+const User = require('../models/user')
 
 exports.getMe = (req, res, next) => {
-    const userId = req.userId
-    Auth.findById(userId)
-        .then(user => {
-            const { email, login } = user
-            res.status(200).send({message: 'Got your user data', id: userId, login, email, resultCode: 0 })
-        })
-        .catch(err => next(err))
+    const authUser = req.authUser
+    const { email, nickname } = authUser
+    res.status(200).send({ message: 'Got your user data', resultCode: 0, data: { id: authUser._id, nickname, email } })
 }
 
 exports.postLogin = async (req, res, next) => {
     try {
         const { email, password, rememberMe } = req.body
-        const user = await Auth.findOne({ email })
-        const token = getToken(user._id.toString())
+        const user = await User.findOne({ email })
         if (!user) {
-            const hashedPassword = bcrypt.hash(password, 12)
+            const hashedPassword = await bcrypt.hash(password, 12)
             const profile = {
-                fullName: 'Full name',
-                aboutMe: 'About me',
-                lookingForAJob: 'Do I Looking for a job',
-                lookingForAJobDescription: 'Job description',
+                fullName: 'full name',
+                aboutMe: 'about me',
+                lookingForAJob: 'do I Looking for a job',
+                lookingForAJobDescription: 'job description',
                 contacts: {
                     telegram: 'telegram',
                     discord: 'discord',
                     gitHub: 'gitHub',
                     facebook: 'facebook',
                     instagram: 'instagram',
+                },
+                location: {
+                    country: 'country',
+                    city: 'city'
                 }
             }
-            const newUser = new Auth({
+            const newUser = new User({
                 email,
                 password: hashedPassword,
-                login: 'Name',
-                status: 'Status',
-                profile
+                nickname: 'nickname',
+                status: 'status',
+                photo: 'photo',
+                profile,
+                subscriptions: []
             })
-            await newUser.save()
+            const result = await newUser.save()
+            const token = getToken(result._id.toString())
             if (!rememberMe)
-                res.cookie('token', token).status(200).send({ message: 'Authenticated', resultCode: 0 })
-            else res.cookie('token', token, { maxAge: 24 * 60 * 60 }).status(200).send({ message: 'Authenticated', resultCode: 0 })
+                res.cookie('token', token).status(200).send({ message: 'User created', resultCode: 0 })
+            else res.cookie('token', token, { maxAge: 86400000 }).status(200).send({ message: 'User created and remembered', resultCode: 0 })
 
         }
         else {
+            const token = getToken(user._id.toString())
             const isEqual = bcrypt.compare(password, user.password)
             if (!isEqual)
                 throw new Error('Incorrect password!')
             if (!rememberMe)
-                res.cookie('token', token).status(201).send({ message: 'User created', resultCode: 0 })
-            else res.cookie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated', resultCode: 0 })
+                res.cookie('token', token).status(201).send({ message: 'Authenticated', resultCode: 0 })
+            else res.cookie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated and remembered', resultCode: 0 })
         }
     }
     catch (err) {
@@ -60,12 +63,7 @@ exports.postLogin = async (req, res, next) => {
 }
 
 exports.deleteLogout = (req, res, next) => {
-    try {
-        res.clearCookie().status(200).send({ message: 'logged out', resultCode: 0 })
-    }
-    catch (err) {
-        next(err)
-    }
+    res.clearCookie('token').status(200).send({ message: 'logged out', resultCode: 0 })
 }
 
 

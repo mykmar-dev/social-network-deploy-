@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 })
 
 app.use(bodyParser.json())
-app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, 'images')))
 // app.use(express.static(path.join(__dirname, 'build')))
 app.use(multer({ storage, fileFilter }).single('image'))
 app.use(cookieParser())

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const {getConfigs} = require('../middleware/get-configs')
+const { getConfigs } = require('../middleware/get-configs')
 
-const authSchema = mongoose.Schema({
+const usersSchema = mongoose.Schema({
     email: getConfigs(String, true),
     password: getConfigs(String, true),
-    login: getConfigs(String, true),
+    nickname: getConfigs(String, true),
     status: getConfigs(String, true),
     photo: getConfigs(String, true),
     profile: {
@@ -19,9 +19,18 @@ const authSchema = mongoose.Schema({
             gitHub: getConfigs(String, true),
             facebook: getConfigs(String, true),
             instagram: getConfigs(String, true),
+        },
+        location: {
+            country: getConfigs(String, true),
+            city: getConfigs(String, true)
         }
-    }
+    },
+    subscriptions: [
+        {
+            type: mongoose.Schema.Types.ObjectId
+        }
+    ]
 }
 )
 
-module.exports = mongoose.model('User', authSchema)
+module.exports = mongoose.model('User', usersSchema)

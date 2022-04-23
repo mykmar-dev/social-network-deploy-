@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/:userId', profileControllers.getProfile)
 router.get('/status/:userId', profileControllers.getStatus)
-router.put('/status/:userId', isAuth, profileControllers.putStatus)
+router.put('/status', isAuth, profileControllers.putStatus)
 router.put('/photo', isAuth, profileControllers.putPhoto)
 
 module.exports = router
