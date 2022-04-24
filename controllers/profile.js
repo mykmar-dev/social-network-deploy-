@@ -1,18 +1,18 @@
 const User = require('../models/user')
-const {deleteFile} = require('../utils/deleteFile')
+const { deleteFile } = require('../utils/deleteFile')
 
 exports.getProfile = (req, res, next) => {
     const userId = req.params.userId
-    User.findById(userId, {profile: 1})
+    User.findById(userId, { profile: 1 })
         .then(user => {
-            res.status(200).send({ message: 'Got profile', resultCode: 0, profile: user.profile})
+            res.status(200).send({ message: 'Got profile', resultCode: 0, profile: user.profile })
         })
         .catch(err => next(err))
 }
 
 exports.getStatus = (req, res, next) => {
     const userId = req.params.userId
-    User.findById(userId, {status: 1})
+    User.findById(userId, { status: 1 })
         .then(user => {
             res.status(200).send({ message: 'Got status', resultCode: 0, status: user.status })
         })
@@ -47,15 +47,18 @@ exports.putPhoto = (req, res, next) => {
 exports.putProfile = (req, res, next) => {
     const authUser = req.authUser
     const data = req.body
+    const newNickname = req.body.nickname
+    if (newNickname)
+        authUser.nickname = newNickname
     authUser.profile = {
-        ...authUser.profile, 
-        contacts: {...authUser.profile.contacts}, 
-        location: {...authUser.profile.location},
+        ...authUser.profile,
+        contacts: { ...authUser.profile.contacts },
+        location: { ...authUser.profile.location },
         ...data
     }
     authUser.save()
-    .then(result => {
-        res.send({ message: 'Profile updated', resultCode: 0 })
-    })
-    .catch(err => next(err))
+        .then(result => {
+            res.send({ message: 'Profile updated', resultCode: 0, nickname: result.nickname })
+        })
+        .catch(err => next(err))
 }

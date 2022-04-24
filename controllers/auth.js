@@ -28,9 +28,9 @@ exports.postLogin = async (req, res, next) => {
         }
         else {
             const token = getToken(user._id.toString())
-            const isEqual = bcrypt.compare(password, user.password)
+            const isEqual = await bcrypt.compare(password, user.password)
             if (!isEqual)
-                throw new Error('Incorrect password!')
+                throw new Error('Incorrect email or password!')
             if (!rememberMe)
                 res.cookie('token', token).status(201).send({ message: 'Authenticated', resultCode: 0 })
             else res.cookie('token', token, { maxAge: 86400000 }).status(201).send({ message: 'Authenticated and remembered', resultCode: 0 })
