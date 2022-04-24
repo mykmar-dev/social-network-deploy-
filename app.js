@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:1000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, filter');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'images')))
-// app.use(express.static(path.join(__dirname, 'build')))
+app.use(express.static(path.join(__dirname, 'build')))
 app.use(multer({ storage, fileFilter }).single('image'))
 app.use(cookieParser())
 
@@ -51,9 +51,9 @@ app.use((error, req, res, next) => {
     })
 })
 
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-//   });
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.5m7db.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
     .then(res => {
