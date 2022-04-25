@@ -1,5 +1,5 @@
 const User = require('../models/user')
-const { deleteFile } = require('../utils/deleteFile')
+const { deleteFile } = require('../images/deleteFile')
 
 exports.getProfile = (req, res, next) => {
     const userId = req.params.userId
