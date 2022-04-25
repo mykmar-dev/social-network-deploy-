@@ -5,7 +5,7 @@ const {isAuth} = require('../middleware/isAuth')
 
 const router = express.Router()
 
-router.get('/userss', usersControllers.getUsers)
+router.post('/users', usersControllers.getUsers)
 router.put('/follow/:id', isAuth, usersControllers.putFollow)
 router.delete('/unfollow/:id', isAuth, usersControllers.deleteUnfollow)
 
