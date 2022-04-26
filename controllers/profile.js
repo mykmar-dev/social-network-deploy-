@@ -60,5 +60,5 @@ exports.putProfile = (req, res, next) => {
         .then(result => {
             res.send({ message: 'Profile updated', resultCode: 0, nickname: result.nickname })
         })
-        .catch(err => next(err))
+        .catch(err => next(err));
 }
