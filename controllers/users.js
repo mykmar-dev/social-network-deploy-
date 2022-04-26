@@ -11,7 +11,7 @@ exports.getUsers = (req, res, next) => {
             return
         })
         .then(() => {
-            return User.find({}, { _id: 1, nickname: 1, status: 1, profile: { location: 1, photo: 1 } })
+            return User.find({}, { _id: 1, nickname: 1, status: 1, profile: { fullName: 1, location: 1, photo: 1 } })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
         })

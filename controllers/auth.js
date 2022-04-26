@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
@@ -9,6 +10,12 @@ exports.getMe = (req, res, next) => {
 }
 
 exports.postLogin = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        const err = new Error(errors.errors[0].msg)
+        err.statusCode = 422
+        return next(err)
+    }
     try {
         const { email, password, rememberMe } = req.body
         const user = await User.findOne({ email })

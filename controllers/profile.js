@@ -59,12 +59,14 @@ exports.putProfile = (req, res, next) => {
     const newNickname = req.body.nickname
     if (newNickname)
         authUser.nickname = newNickname
-    authUser.profile = {
+    let newProfile = {
         ...authUser.profile,
-        contacts: { ...authUser.profile.contacts },
-        location: { ...authUser.profile.location },
-        ...data
+        ...data,
+        contacts: { ...authUser.profile.contacts, ...data.contacts },
+        location: { ...authUser.profile.location, ...data.location },
+        
     }
+    authUser.profile = newProfile
     authUser.save()
         .then(result => {
             res.send({ message: 'Profile updated', resultCode: 0, nickname: result.nickname })
