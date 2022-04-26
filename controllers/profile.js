@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const User = require('../models/user')
-const { deleteFile } = require('../images/deleteFile')
 
 exports.getProfile = (req, res, next) => {
     const userId = req.params.userId
