@@ -10,21 +10,6 @@ const userRoutes = require('./routes/users')
 const profileRoutes = require('./routes/profile')
 const authRoutes = require('./routes/auth')
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
-})
-
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')
-        return cb(null, true)
-    cb(null, false)
-}
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
@@ -36,7 +21,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'images')))
 app.use(express.static(path.join(__dirname, 'build')))
-app.use(multer({ storage, fileFilter }).single('image'))
+app.use(multer().single('image'))
 app.use(cookieParser())
 
 app.use('/auth', authRoutes)

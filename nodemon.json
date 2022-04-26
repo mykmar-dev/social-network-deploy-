@@ -2,6 +2,7 @@
     "env": {
         "MONGO_USER": "mykmar",
         "MONGO_PASSWORD": "27468024",
-        "MONGO_DB": "socialnetwork"
+        "MONGO_DB": "socialnetwork",
+        "CLOUDINARY_URL": "cloudinary://197351572474564:Y_4JcLMvFBcqNPSpEeXxyjMlBxo@fuq"
     }
 }

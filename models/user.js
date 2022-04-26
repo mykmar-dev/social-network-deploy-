@@ -15,6 +15,7 @@ const usersSchema = mongoose.Schema({
     status: getConfigs(String, false, ''),
     profile: {
         photo: getConfigs(String, false, ''),
+        filename: getConfigs(String, false, ''),
         fullName: getConfigs(String, false, ''),
         aboutMe: getConfigs(String, false, ''),
         lookingForAJob: getConfigs(String, false, ''),
