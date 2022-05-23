@@ -1,12 +1,13 @@
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const User = require('../models/user')
+const ObjectId = require('mongodb').ObjectId;
 
-exports.getProfile = (req, res, next) => {
+exports.getProfileAndPosts = (req, res, next) => {
     const userId = req.params.userId
-    User.findById(userId, { profile: 1 })
+    User.findById(userId)
         .then(user => {
-            res.status(200).send({ message: 'Got profile', resultCode: 0, profile: user.profile })
+            res.status(200).send({ message: 'Got profile', resultCode: 0, profile: user.profile, posts: user.posts })
         })
         .catch(err => next(err))
 }
@@ -89,3 +90,23 @@ let streamUpload = (req) => {
         streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
 };
+
+exports.postPost = (req, res, next) => {
+    const authUser = req.authUser
+    const newPost = req.body.newPost
+    authUser.posts.push({_id: new ObjectId(), message: newPost}) 
+    authUser.save()
+    .then(result => {
+        res.send({ message: 'Post added', resultCode: 0, posts: result.posts})
+    }) 
+}
+
+exports.deletePost = (req, res, next) => {
+    const authUser = req.authUser
+    const postId = req.params.postId
+    authUser.posts = authUser.posts.filter(post => post._id != postId) 
+    authUser.save()
+    .then(result => {
+        res.send({ message: 'Post deleted', resultCode: 0, posts: result.posts})
+    })
+}

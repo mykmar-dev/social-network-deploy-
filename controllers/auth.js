@@ -24,7 +24,8 @@ exports.postLogin = async (req, res, next) => {
             const newUser = new User({
                 email,
                 password: hashedPassword,
-                subscriptions: []
+                subscriptions: [],
+                posts: []
             })
             const result = await newUser.save()
             const token = getToken(result._id.toString())

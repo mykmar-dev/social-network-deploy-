@@ -36,6 +36,15 @@ const usersSchema = mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
         }
+    ],
+    posts: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId
+            },
+            message: getConfigs(String, false, ''),
+            likesCount: getConfigs(Number, false, 0)
+        }
     ]
 }
 )
