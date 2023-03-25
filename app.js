@@ -44,6 +44,6 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PA
     .then(res => {
         const server = app.listen(process.env.PORT || 8080)
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
 
 
